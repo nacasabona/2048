@@ -1,14 +1,7 @@
 import pygame as pg
-import src.settings as s
-
-pg.init()
-screen = pg.display.set_mode((s.WIDTH, s.HEIGHT))
-pg.display.set_caption("2048")
-clock = pg.time.Clock()
 
 
-# main loop
-class Loop:
+class Game:
     def __init__(self, screen):
         self.screen = screen
 
@@ -21,3 +14,4 @@ class Loop:
                     running = False
             screen.fill((0, 0, 0))
             pg.display.flip()
+

@@ -2,7 +2,7 @@ import pygame as pg
 import src.settings as s
 
 pg.init()
-screen = pg.display.set_mode((s.WT, s.HT))
+screen = pg.display.set_mode((s.WIDTH, s.HEIGHT))
 pg.display.set_caption("2048")
 clock = pg.time.Clock()
 

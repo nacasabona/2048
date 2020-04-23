@@ -1,14 +1,26 @@
+import logging
+
 import pygame as pg
 
 import src.settings as s
 from src.game import Game
 
 
-if __name__ == '__main__':
+def configure_pygame():
     pg.init()
-    screen = pg.display.set_mode((s.WIDTH, s.HEIGHT))
-    pg.display.set_caption('2048')
-    clock = pg.time.Clock()
-    game = Game(screen)
-    game.run()
+    pg.display.set_caption(s.CAPTION)
 
+
+def configure_logging():
+    logging.basicConfig(
+        format='[%(asctime)s] [%(name)s] [%(levelname)s]: %(message)s',
+        datefmt='%I:%M:%S %p',
+        level=getattr(logging, s.LEVEL)
+    )
+
+
+if __name__ == '__main__':
+    configure_logging()
+    configure_pygame()
+    game = Game()
+    game.run()

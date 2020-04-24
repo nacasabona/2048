@@ -11,7 +11,6 @@ logger = logging.getLogger(Path(__file__).stem)
 
 class Game:
     def __init__(self):
-        pg.init()
         # después van a venir los ruiditos
         pg.mixer.init()
         self.screen = pg.display.set_mode((s.WIDTH, s.HEIGHT))
@@ -45,9 +44,3 @@ class Game:
         self.screen.fill((0, 0, 0))
         # self.all_sprites.draw(self.screen)
         pg.display.flip()
-
-
-
-
-
-

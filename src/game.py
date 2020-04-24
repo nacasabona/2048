@@ -11,10 +11,10 @@ logger = logging.getLogger(Path(__file__).stem)
 
 class Game:
     def __init__(self):
-        # después van a venir los ruiditos
-        pg.mixer.init()
         self.screen = pg.display.set_mode((s.WIDTH, s.HEIGHT))
         self.clock = pg.time.Clock()
+        self.running = False
+        self.debug = False
 
     def new(self):
         # esto estaba en el modelo. después veo cómo meterlo cuando funcione el resto bien
@@ -34,13 +34,22 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_v:
+                    self.debug = not self.debug
+                    logger.info('Debug mode enabled: %s', self.debug)
 
     def update(self):
-        # para cuando metamos las sprites
-        # self.all_sprites.update()
-        pass
+        self.screen.fill((0, 0, 0))
+        if self.debug:
+            self.draw_grid(self.screen)
 
     def draw(self):
-        self.screen.fill((0, 0, 0))
         # self.all_sprites.draw(self.screen)
         pg.display.flip()
+
+    def draw_grid(self, screen):
+        for x in range(0, s.WIDTH, s.TILESIZE):
+            pg.draw.line(screen, s.LIGHTGREY, (x, 0), (x, s.HEIGHT))
+        for y in range(0, s.HEIGHT, s.TILESIZE):
+            pg.draw.line(screen, s.LIGHTGREY, (0, y), (s.WIDTH, y))

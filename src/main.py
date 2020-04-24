@@ -8,6 +8,8 @@ from src.game import Game
 
 def configure_pygame():
     pg.init()
+    # después van a venir los ruiditos
+    pg.mixer.init()
     pg.display.set_caption(s.CAPTION)
 
 

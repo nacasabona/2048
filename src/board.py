@@ -14,7 +14,7 @@ class Board:
                 if self.board[row][col] == 0:
                     options.append([row,col])
 
-        here = options[r.randrange(len(options))]
+        here = r.choice(options)
         self.board[here[0]][here[1]] = r.randrange(1,3)
 
     def move(self, direction):

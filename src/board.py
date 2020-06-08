@@ -15,7 +15,7 @@ class Board:
                     options.append([row,col])
 
         here = r.choice(options)
-        self.board[here[0]][here[1]] = r.randrange(1,3)
+        self.board[here[0]][here[1]] = r.choice([1,1,1,2])
 
     def move(self, direction):
         pass

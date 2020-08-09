@@ -1,10 +1,14 @@
 import logging
+from pathlib import Path
 from typing import Any
 from collections import defaultdict
 
 import pygame as pg
 
 from src.events.events import CustomEvents
+
+
+logger = logging.getLogger(Path(__file__).stem)
 
 
 class CustomEventHasNoName(Exception):
@@ -30,7 +34,7 @@ class Overseer:
             name = event_type.name
         else:
             name = pg.event.event_name(event_type)
-        logging.debug(
+        logger.debug(
             'Registering listener: %r for event %r',
             entity, name
         )
@@ -38,7 +42,7 @@ class Overseer:
 
     @classmethod
     def broadcast(cls, event):
-        logging.debug('Broadcasting: %r', event)
+        logger.debug('Broadcasting: %r', event)
         name = event.type
         if event.type == pg.USEREVENT:
             sanitize_user_event(event)

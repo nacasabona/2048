@@ -31,62 +31,56 @@ class TypewriterConfig:
                              f'Should be {self.positions!r}')
 
 
-@dataclass
-class Typewriter:
-    surface: 'pg.Surface'
+def write(
+    surface: pg.Surface, text: str, coords: Coords = None,
     config: TypewriterConfig = TypewriterConfig()
+) -> None:
+    font = get_font(config.size, config.bold)
 
-    def type(self, text: str, coords: Coords = None,
-             config: TypewriterConfig = None
-             ) -> None:
-        # TODO: override method signature to make it static by
-        # passing it a display surface.
-        conf = config if config else self.config
-        font = self.get_font(conf.size, conf.bold)
+    text_surf = font.render(
+        # this function takes no keyword args...
+        text,  # text
+        False,  # antialias
+        config.color  # color
+    )
+    text_rect = position(surface, text_surf.get_rect(), config, coords)
+    surface.blit(text_surf, text_rect)
 
-        text_surf = font.render(
-            # this function takes no keyword args...
-            text,  # text
-            False,  # antialias
-            conf.color  # color
-        )
-        text_rect = self.position(text_surf.get_rect(), conf.pos, coords)
-        self.surface.blit(text_surf, text_rect)
 
-    def position(self, text_rect, pos, coords):
-        s_rect = self.surface.get_rect()
-        if coords:
-            text_rect.topleft = coords
-        elif pos == 'center':
-            text_rect.center = s_rect.center
-        elif pos == 'topleft':
-            padding = Coords(x=self.config.padding, y=self.config.padding)
-            text_rect.topleft = s_rect.topleft + padding
-        elif pos == 'midtop':
-            padding = Coords(x=0, y=self.config.padding)
-            text_rect.midtop = s_rect.midtop + padding
-        elif pos == 'topright':
-            padding = Coords(x=-self.config.padding, y=self.config.padding)
-            text_rect.topright = s_rect.topright + padding
-        elif pos == 'midleft':
-            padding = Coords(x=self.config.padding, y=0)
-            text_rect.midleft = s_rect.midleft + padding
-        elif pos == 'midright':
-            padding = Coords(x=-self.config.padding, y=0)
-            text_rect.midright = s_rect.midright + padding
-        elif pos == 'bottomleft':
-            padding = Coords(x=self.config.padding, y=-self.config.padding)
-            text_rect.bottomleft = s_rect.bottomleft + padding
-        elif pos == 'midbottom':
-            padding = Coords(x=0, y=-self.config.padding)
-            text_rect.midbottom = s_rect.midbottom + padding
-        elif pos == 'bottomright':
-            padding = Coords(x=-self.config.padding, y=-self.config.padding)
-            text_rect.bottomright = s_rect.bottomright + padding
-        return text_rect
+def position(surface, text_rect, config, coords=None):
+    s_rect = surface.get_rect()
+    if coords:
+        text_rect.topleft = coords
+    elif config.pos == 'center':
+        text_rect.center = s_rect.center
+    elif config.pos == 'topleft':
+        padding = Coords(x=config.padding, y=config.padding)
+        text_rect.topleft = s_rect.topleft + padding
+    elif config.pos == 'midtop':
+        padding = Coords(x=0, y=config.padding)
+        text_rect.midtop = s_rect.midtop + padding
+    elif config.pos == 'topright':
+        padding = Coords(x=-config.padding, y=config.padding)
+        text_rect.topright = s_rect.topright + padding
+    elif config.pos == 'midleft':
+        padding = Coords(x=config.padding, y=0)
+        text_rect.midleft = s_rect.midleft + padding
+    elif config.pos == 'midright':
+        padding = Coords(x=-config.padding, y=0)
+        text_rect.midright = s_rect.midright + padding
+    elif config.pos == 'bottomleft':
+        padding = Coords(x=config.padding, y=-config.padding)
+        text_rect.bottomleft = s_rect.bottomleft + padding
+    elif config.pos == 'midbottom':
+        padding = Coords(x=0, y=-config.padding)
+        text_rect.midbottom = s_rect.midbottom + padding
+    elif config.pos == 'bottomright':
+        padding = Coords(x=-config.padding, y=-config.padding)
+        text_rect.bottomright = s_rect.bottomright + padding
+    return text_rect
 
-    @staticmethod
-    def get_font(size, bold):
-        font = pg.font.Font(s.FONT_PATH, size)
-        font.set_bold(bold)
-        return font
+
+def get_font(size, bold):
+    font = pg.font.Font(s.FONT_PATH, size)
+    font.set_bold(bold)
+    return font

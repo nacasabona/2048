@@ -5,7 +5,7 @@ import pygame as pg
 
 import src.settings as s
 from src.utils.coords import Coords
-from src.utils.typewriter import Typewriter, TypewriterConfig
+from src.utils.typewriter import TypewriterConfig, write
 
 
 logger = logging.getLogger(Path(__file__).stem)
@@ -53,11 +53,11 @@ class Game:
 
     def draw_mouse_pos(self, screen):
         mx, my = pg.mouse.get_pos()
-        tp = Typewriter(
-            screen,
-            TypewriterConfig(size=12, pos='bottomright', padding=0)
+        write(
+            surface=screen,
+            text=str(Coords(x=mx, y=my)),
+            config=TypewriterConfig(size=12, pos='bottomright', padding=0)
         )
-        tp.type(str(Coords(x=mx, y=my)))
 
     def draw_grid(self, screen):
         for x in range(0, s.WIDTH, s.TILESIZE):

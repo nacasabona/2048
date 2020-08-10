@@ -5,7 +5,7 @@ import pygame as pg
 
 import src.settings as s
 from src.events.overseer import Overseer
-from src.events.events import CustomEvents
+from src.ui.menu import Menu
 from src.utils.coords import Coords
 from src.utils.typewriter import TypewriterConfig, write
 
@@ -18,6 +18,7 @@ class Game:
         self._register_listeners()
         self.screen = pg.display.set_mode((s.WIDTH, s.HEIGHT))
         self.clock = pg.time.Clock()
+        self.sprites = pg.sprite.Group()
         self.running = False
         self.debug = False
 
@@ -27,12 +28,12 @@ class Game:
 
     def new(self):
         # esto estaba en el modelo. después veo cómo meterlo cuando funcione el resto bien
-        # self.all_sprites = pg.sprite.Group()
-        pass
+        self.menu = Menu(self.sprites)
 
     def run(self):
         logger.info('Starting main loop')
         self.running = True
+        self.new()
         while self.running:
             self.clock.tick(s.FPS)
             self.update()
@@ -42,12 +43,13 @@ class Game:
         for event in pg.event.get():
             Overseer.broadcast(event)
         self.screen.fill((0, 0, 0))
+        self.sprites.update()
         if self.debug:
             self.draw_grid(self.screen)
             self.draw_mouse_pos(self.screen)
 
     def draw(self):
-        # self.all_sprites.draw(self.screen)
+        self.sprites.draw(self.screen)
         pg.display.flip()
 
     def on_notify(self, event):

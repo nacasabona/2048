@@ -4,4 +4,4 @@ import pygame as pg
 
 
 class CustomEvents(Enum):
-    StartGame = pg.event.custom_type()
+    START_GAME = pg.event.custom_type()

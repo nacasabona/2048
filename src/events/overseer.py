@@ -5,18 +5,12 @@ from collections import defaultdict
 
 import pygame as pg
 
-from src.events.events import CustomEvents
+from src.events.events import (
+    CustomEvents, CustomEventIsNotDefined, CustomEventHasNoName
+)
 
 
 logger = logging.getLogger(Path(__file__).stem)
-
-
-class CustomEventHasNoName(Exception):
-    pass
-
-
-class CustomEventIsNotDefined(Exception):
-    pass
 
 
 class Overseer:

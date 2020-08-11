@@ -1,5 +1,6 @@
 import random as r
 
+
 class Grid:
 
     def __init__(self):
@@ -41,34 +42,44 @@ class Grid:
                 empty -= 1
         return row
 
-
     def move_right(self):
         for row in self.matrix:
             self.move(self.merge(row))
 
     def move_left(self):
-        pass
-
-    def move_up(self):
-        #  M_t = zip(*self.matrix)
-        pass
+        for row in self.matrix:
+            row.reverse()
+            self.move(self.merge(row))
+            row.reverse()
 
     def move_down(self):
-        pass
+        transposed = [list(row) for row in zip(*self.matrix)]
+        for row in transposed:
+            self.move(self.merge(row))
+        self.matrix = [list(row) for row in zip(*transposed)]
+
+
+    def move_up(self):
+        transposed = [list(row) for row in zip(*self.matrix)]
+        for row in transposed:
+            row.reverse()
+            self.move(self.merge(row))
+            row.reverse()
+        self.matrix = [list(row) for row in zip(*transposed)]
 
     def are_moves_available(self):
         pass
 
-       
+
 
 
 
 grid = Grid()
 
-grid.matrix = [[2, 0, 0, 0],[0, 4, 0, 0],[0, 2, 0, 0],[2, 2, 2, 4]]
+grid.matrix = [[2, 0, 0, 0],[0, 0, 4, 2],[2, 0, 0, 2],[2, 2, 0, 0]]
 print(grid)
 print("///////")
-grid.move_right()
+grid.move_up()
 print(grid)
 
 

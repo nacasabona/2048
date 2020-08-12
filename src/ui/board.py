@@ -51,7 +51,7 @@ class Board(pg.sprite.Sprite):
                 tile = Tile(
                     pos=pg.Vector2(x_pos, y_pos),
                     size=self.tile_size,
-                    value=self.grid[i][j]
+                    value=self.grid[j][i]
                 )
                 self.image.blit(tile.image, tile.rect)
 

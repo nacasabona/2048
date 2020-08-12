@@ -75,3 +75,6 @@ class Grid:
 
     def are_moves_available(self):
         pass
+
+
+# esto es un cambio

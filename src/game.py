@@ -6,6 +6,7 @@ import pygame as pg
 import src.settings as s
 from src.events.overseer import Overseer
 from src.ui.menu import Menu
+from src.ui.board import Board
 from src.utils.coords import Coords
 from src.utils.typewriter import TypewriterConfig, write
 
@@ -29,6 +30,7 @@ class Game:
     def new(self):
         # esto estaba en el modelo. después veo cómo meterlo cuando funcione el resto bien
         self.menu = Menu(self.sprites)
+        self.board = Board(self.sprites)
 
     def run(self):
         logger.info('Starting main loop')

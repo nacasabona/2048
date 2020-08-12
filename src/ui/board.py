@@ -56,6 +56,7 @@ class Board(pg.sprite.Sprite):
                 self.image.blit(tile.image, tile.rect)
 
     def move(self, direction):
+        self.grid.add_rdm_tile()
         if direction == pg.K_UP:
             self.grid.move_up()
         elif direction == pg.K_DOWN:

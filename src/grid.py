@@ -4,7 +4,7 @@ import random as r
 class Grid:
 
     def __init__(self):
-        self.matrix = [[2] * 4 for i in range(4)]
+        self.matrix = [[0] * 4 for i in range(4)]
 
     def __str__(self):
         return "\n".join([str(row) for row in self.matrix])
@@ -75,4 +75,3 @@ class Grid:
 
     def are_moves_available(self):
         pass
-

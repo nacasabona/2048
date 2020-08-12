@@ -4,10 +4,16 @@ import random as r
 class Grid:
 
     def __init__(self):
-        self.matrix = [[0] * 4 for i in range(4)]
+        self.matrix = [[2] * 4 for i in range(4)]
 
     def __str__(self):
         return "\n".join([str(row) for row in self.matrix])
+
+    def __len__(self):
+        return len(self.matrix)
+
+    def __getitem__(self, item):
+        return self.matrix[item]
 
     def add_rdm_tile(self):
         options = []

@@ -76,26 +76,3 @@ class Grid:
     def are_moves_available(self):
         pass
 
-
-
-
-
-grid = Grid()
-
-grid.matrix = [[2, 0, 0, 0],[0, 0, 4, 2],[2, 0, 0, 2],[2, 2, 0, 0]]
-print(grid)
-print("///////")
-grid.move_up()
-print(grid)
-
-
-
-
-                
-
-
-
-
-
-
-

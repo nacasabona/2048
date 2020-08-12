@@ -1,33 +1,73 @@
-import random as r
-from src.grid import Grid
-import pygame as pg
-from src.events.overseer import Overseer
 import logging
 from pathlib import Path
 
+import pygame as pg
+
+import src.settings as s
+from src.grid import Grid
+from src.ui.tile import Tile
+from src.events.overseer import Overseer
+from src.events.events import CustomEvents
+
+
 logger = logging.getLogger(Path(__file__).stem)
 
-class Board:
 
-    def __init__(self):
-        self.score = 0
-        self.game_over = False
-        self.grid = Grid()
+class Board(pg.sprite.Sprite):
+    backdrop_size = pg.Vector2(28*s.TILESIZE, 28*s.TILESIZE)
+    backdrop_pos = pg.Vector2(s.TILESIZE, s.TILESIZE)
+    tile_size = pg.Vector2(6*s.TILESIZE, 6*s.TILESIZE)
+    margin = s.TILESIZE // 4
+    padding = s.TILESIZE * 1.5
+
+    def __init__(self, sprite_group):
+        self.sprite_group = sprite_group
+        super().__init__(self.sprite_group)
+        self.playing = False
+        self.grid = None
         self._register_listeners()
+        self._draw_backdrop()
 
-    def move(self, direction):
-        pass
-
-    # esto estaría en el loop principal fichando si ya terminó el juego
-    def is_game_over(self):
-        if self.game_over:
-            pass
+    def _draw_backdrop(self):
+        self.image = pg.Surface(self.backdrop_size)
+        self.image.fill(s.DARKGREY)
+        self.rect = self.image.get_rect(topleft=self.backdrop_pos)
 
     def _register_listeners(self):
         Overseer.add_listener(pg.KEYDOWN, self)
+        Overseer.add_listener(CustomEvents.START_GAME, self)
 
-    #esto es para que registre las teclas y las mande a grid
-    def on_notify(self,event):
-        logger.debug(event)
+    def new(self):
+        self.grid = Grid()
+        self.playing = True
 
+    def update(self):
+        if not self.playing:
+            return
+        for i in range(len(self.grid)):
+            x_pos = self.padding + i * (self.tile_size.x + self.margin)
+            for j in range(len(self.grid[i])):
+                y_pos = self.padding + j * (self.tile_size.y + self.margin)
+                tile = Tile(
+                    pos=pg.Vector2(x_pos, y_pos),
+                    size=self.tile_size,
+                    value=self.grid[i][j]
+                )
+                self.image.blit(tile.image, tile.rect)
 
+    def move(self, direction):
+        if direction == pg.K_UP:
+            self.grid.move_up()
+        elif direction == pg.K_DOWN:
+            self.grid.move_down()
+        elif direction == pg.K_LEFT:
+            self.grid.move_left()
+        elif direction == pg.K_RIGHT:
+            self.grid.move_right()
+
+    def on_notify(self, event):
+        if event.type == pg.KEYDOWN:
+            self.move(event.key)
+        if event.type == pg.USEREVENT:
+            if event.custom_type == CustomEvents.START_GAME:
+                self.new()

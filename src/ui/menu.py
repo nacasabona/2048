@@ -12,7 +12,7 @@ class Menu(pg.sprite.Sprite):
     )
     pos = pg.Vector2(
         x=30 * s.TILESIZE,
-        y=2 * s.TILESIZE
+        y=s.TILESIZE
     )
 
     def __init__(self, sprite_group):

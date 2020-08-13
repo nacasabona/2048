@@ -86,5 +86,3 @@ class Grid:
                 return True
         return False
 
-
-# esto es un cambio

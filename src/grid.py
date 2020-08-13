@@ -1,10 +1,11 @@
 import random as r
+import src.settings as s
 
 
 class Grid:
 
     def __init__(self):
-        self.matrix = [[0] * 4 for i in range(4)]
+        self.matrix = [[2] * 4 for i in range(4)]
 
     def __str__(self):
         return "\n".join([str(row) for row in self.matrix])
@@ -20,10 +21,10 @@ class Grid:
         for row in range(4):
             for col in range(4):
                 if self.matrix[row][col] == 0:
-                    options.append([row ,col])
+                    options.append([row, col])
 
         here = r.choice(options)
-        self.matrix[here[0]][here[1]] = r.choice([2, 2, 2, 2, 4])
+        self.matrix[here[0]][here[1]] = r.choices(s.LIST_NUM, s.LIST_PROB)[0]
 
     def merge(self, row):
         last = [0,0]
@@ -74,7 +75,16 @@ class Grid:
         self.matrix = [list(row) for row in zip(*transposed)]
 
     def are_moves_available(self):
-        pass
+        transposed = [list(row) for row in zip(*self.matrix)]
+        for row in self.matrix:
+            if 0 in row:
+                return True
+            if row != self.merge(row):
+                return True
+        for col in transposed:
+            if col != self.merge(col):
+                return True
+        return False
 
 
 # esto es un cambio

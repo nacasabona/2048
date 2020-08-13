@@ -8,6 +8,8 @@ WIDTH = 640
 FPS = 30
 TILESIZE = 16
 FONT_PATH = str(PurePath('assets', 'fonts', 'redalert_inet.ttf'))
+LIST_NUM = [2, 4]
+LIST_PROB = [0.8, 0.2]
 
 
 # Logging config

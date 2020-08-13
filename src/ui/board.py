@@ -21,6 +21,15 @@ class Board(pg.sprite.Sprite):
     margin = s.TILESIZE // 4
     padding = s.TILESIZE * 1.5
 
+    def __str__(self):
+        return "\n".join([str(row) for row in self.matrix])
+
+    def __len__(self):
+        return len(self.matrix)
+
+    def __getitem__(self, item):
+        return self.matrix[item]
+
     def __init__(self, sprite_group):
         self.sprite_group = sprite_group
         super().__init__(self.sprite_group)
@@ -28,6 +37,7 @@ class Board(pg.sprite.Sprite):
         self.grid = None
         self._register_listeners()
         self._draw_backdrop()
+        self.matrix = [[2] * 4 for i in range(4)]
 
     def _draw_backdrop(self):
         self.image = pg.Surface(self.backdrop_size)
@@ -45,29 +55,29 @@ class Board(pg.sprite.Sprite):
     def update(self):
         if not self.playing:
             return
-        for i in range(len(self.grid)):
+        for i in range(len(self)):
             x_pos = self.padding + i * (self.tile_size.x + self.margin)
-            for j in range(len(self.grid[i])):
+            for j in range(len(self[i])):
                 y_pos = self.padding + j * (self.tile_size.y + self.margin)
                 tile = Tile(
                     pos=pg.Vector2(x_pos, y_pos),
                     size=self.tile_size,
-                    value=self.grid[j][i]
+                    value=self[j][i]
                 )
                 self.image.blit(tile.image, tile.rect)
 
     def move(self, direction):
-        old_matrix = copy.deepcopy(self.grid.matrix)
+        old_matrix = copy.deepcopy(self.matrix)
         if direction == pg.K_UP:
-            self.grid.move_up()
+            self.matrix = self.grid.move_up(self.matrix)
         elif direction == pg.K_DOWN:
-            self.grid.move_down()
+            self.matrix = self.grid.move_down(self.matrix)
         elif direction == pg.K_LEFT:
-            self.grid.move_left()
+            self.matrix = self.grid.move_left(self.matrix)
         elif direction == pg.K_RIGHT:
-            self.grid.move_right()
-        if old_matrix != self.grid.matrix:
-            self.grid.add_rdm_tile()
+            self.matrix = self.grid.move_right(self.matrix)
+        if old_matrix != self.matrix:
+            self.matrix = self.grid.add_rdm_tile(self.matrix)
 
     def on_notify(self, event):
         if event.type == pg.KEYDOWN:

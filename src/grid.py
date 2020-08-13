@@ -4,27 +4,16 @@ import src.settings as s
 
 class Grid:
 
-    def __init__(self):
-        self.matrix = [[2] * 4 for i in range(4)]
-
-    def __str__(self):
-        return "\n".join([str(row) for row in self.matrix])
-
-    def __len__(self):
-        return len(self.matrix)
-
-    def __getitem__(self, item):
-        return self.matrix[item]
-
-    def add_rdm_tile(self):
+    def add_rdm_tile(self, matrix):
         options = []
         for row in range(4):
             for col in range(4):
-                if self.matrix[row][col] == 0:
+                if matrix[row][col] == 0:
                     options.append([row, col])
 
         here = r.choice(options)
-        self.matrix[here[0]][here[1]] = r.choices(s.LIST_NUM, s.LIST_PROB)[0]
+        matrix[here[0]][here[1]] = r.choices(s.LIST_NUM, s.LIST_PROB)[0]
+        return matrix
 
     def merge(self, row):
         last = [0,0]
@@ -49,34 +38,37 @@ class Grid:
                 empty -= 1
         return row
 
-    def move_right(self):
-        for row in self.matrix:
+    def move_right(self, matrix):
+        for row in matrix:
             self.move(self.merge(row))
+        return matrix
 
-    def move_left(self):
-        for row in self.matrix:
+    def move_left(self, matrix):
+        for row in matrix:
             row.reverse()
             self.move(self.merge(row))
             row.reverse()
+        return matrix
 
-    def move_down(self):
-        transposed = [list(row) for row in zip(*self.matrix)]
+    def move_down(self, matrix):
+        transposed = [list(row) for row in zip(*matrix)]
         for row in transposed:
             self.move(self.merge(row))
-        self.matrix = [list(row) for row in zip(*transposed)]
+        matrix = [list(row) for row in zip(*transposed)]
+        return matrix
 
-
-    def move_up(self):
-        transposed = [list(row) for row in zip(*self.matrix)]
+    def move_up(self, matrix):
+        transposed = [list(row) for row in zip(*matrix)]
         for row in transposed:
             row.reverse()
             self.move(self.merge(row))
             row.reverse()
-        self.matrix = [list(row) for row in zip(*transposed)]
+        matrix = [list(row) for row in zip(*transposed)]
+        return matrix
 
-    def are_moves_available(self):
-        transposed = [list(row) for row in zip(*self.matrix)]
-        for row in self.matrix:
+    def are_moves_available(self, matrix):
+        transposed = [list(row) for row in zip(*matrix)]
+        for row in matrix:
             if 0 in row:
                 return True
             if row != self.merge(row):

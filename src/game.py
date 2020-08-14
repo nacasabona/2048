@@ -37,15 +37,15 @@ class Game:
         self.running = True
         self.new()
         while self.running:
-            self.clock.tick(s.FPS)
-            self.update()
+            dt = self.clock.tick(s.FPS) / 1000
+            self.update(dt)
             self.draw()
 
-    def update(self):
+    def update(self, dt: float):
         for event in pg.event.get():
             Overseer.broadcast(event)
         self.screen.fill((0, 0, 0))
-        self.sprites.update()
+        self.sprites.update(dt)
         if self.debug:
             self.draw_grid(self.screen)
             self.draw_mouse_pos(self.screen)

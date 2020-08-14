@@ -38,7 +38,7 @@ class Button(pg.sprite.Sprite):
         Overseer.add_listener(pg.MOUSEMOTION, self)
         Overseer.add_listener(pg.MOUSEBUTTONUP, self)
 
-    def update(self):
+    def update(self, dt):
         if self.hover:
             self.image.fill(self.hover_color)
         else:

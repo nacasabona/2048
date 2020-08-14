@@ -7,6 +7,7 @@ import pygame as pg
 import src.settings as s
 from src.grid import Grid
 from src.ui.tile import Tile
+from src.ui.panel import Panel
 from src.events.overseer import Overseer
 from src.events.events import CustomEvents
 
@@ -52,7 +53,7 @@ class Board(pg.sprite.Sprite):
         self.grid = Grid()
         self.playing = True
 
-    def update(self):
+    def update(self, dt):
         if not self.playing:
             return
         for i in range(len(self)):

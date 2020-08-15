@@ -7,7 +7,6 @@ import pygame as pg
 import src.settings as s
 from src.grid import Grid
 from src.ui.tile import Tile
-from src.ui.panel import Panel
 from src.events.overseer import Overseer
 from src.events.events import CustomEvents
 

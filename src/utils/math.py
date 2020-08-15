@@ -19,5 +19,5 @@ def lerp(
     a: Union[float, int, pg.Vector2, pg.Vector3],
     b: Union[float, int, pg.Vector2, pg.Vector3],
     t: float
-) -> float:
+) -> Union[float, int, pg.Vector2, pg.Vector3]:
     return a * (1 - t) + b * t

@@ -1,5 +1,7 @@
 from pathlib import PurePath
 
+import pygame as pg
+
 
 # Game general config
 CAPTION = '2048'
@@ -17,13 +19,15 @@ LEVEL = 'DEBUG'
 
 
 # define some colors (R, G, B)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-DARKGREY = (40, 40, 40)
-LIGHTGREY = (100, 100, 100)
-GREEN = (102, 255, 102)
-LIGHTGREEN = (51, 255, 51)
-DARKGREEN = (0, 128, 0)
-RED = (255, 0, 0)
-YELLOW = (255, 255, 0)
-LIGHTBLUE = (142,229,238)
+WHITE = pg.Vector3(255, 255, 255)
+BLACK = pg.Vector3(0, 0, 0)
+DARKGREY = pg.Vector3(40, 40, 40)
+LIGHTGREY = pg.Vector3(100, 100, 100)
+GREEN = pg.Vector3(102, 255, 102)
+LIGHTGREEN = pg.Vector3(51, 255, 51)
+DARKGREEN = pg.Vector3(0, 128, 0)
+RED = pg.Vector3(255, 0, 0)
+YELLOW = pg.Vector3(255, 255, 0)
+LIGHTBLUE = pg.Vector3(133, 180, 255)
+BLUE = pg.Vector3(28, 115, 255)
+LIGHTPURPLE = pg.Vector3(195, 171, 255)

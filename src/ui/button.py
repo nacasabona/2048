@@ -5,10 +5,14 @@ import pygame as pg
 import src.settings as s
 from src.events.overseer import Overseer
 from src.events.events import CustomEvents
+from src.utils.math import lerp, clamp
 from src.utils.typewriter import TypewriterConfig, write
 
 
 class Button(pg.sprite.Sprite):
+    on_hover_in_time = 3
+    on_hover_out_time = 5
+
     def __init__(
             self, size: pg.Vector2, pos: pg.Vector2,
             text: str, on_click: Union[CustomEvents, int],
@@ -31,6 +35,7 @@ class Button(pg.sprite.Sprite):
         self.image.fill(self.color)
         self.rect = self.image.get_rect(topleft=self.pos)
         self.hover = False
+        self.lerp_t = 0
         self.on_click = on_click
         self.draw_text()
 
@@ -47,9 +52,15 @@ class Button(pg.sprite.Sprite):
 
     def update(self, dt):
         if self.hover:
-            self.image.fill(self.hover_color)
+            self.lerp_t = clamp(0, 1, self.lerp_t + self.on_hover_in_time * dt)
         else:
-            self.image.fill(self.color)
+            self.lerp_t = clamp(0, 1, self.lerp_t - self.on_hover_out_time * dt)
+        color = lerp(
+            self.color,
+            self.hover_color,
+            self.lerp_t
+        )
+        self.image.fill(color)
         self.draw_text()
         self.parent_surface.blit(self.image, self.rect)
 

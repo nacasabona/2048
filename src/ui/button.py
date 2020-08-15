@@ -10,16 +10,16 @@ from src.utils.typewriter import TypewriterConfig, write
 
 
 class Button(pg.sprite.Sprite):
-    on_hover_in_time = 3
-    on_hover_out_time = 5
+    on_hover_in_time = 0.3
+    on_hover_out_time = 0.5
 
     def __init__(
             self, size: pg.Vector2, pos: pg.Vector2,
             text: str, on_click: Union[CustomEvents, int],
             parent_surface: pg.Surface,
             text_cfg: TypewriterConfig = TypewriterConfig(),
-            color: Tuple[int, int, int] = s.BLACK,
-            hover_color: Tuple[int, int, int] = s.DARKGREEN,
+            color: pg.Vector3 = s.BLACK,
+            hover_color: pg.Vector3 = s.DARKGREEN,
             parent_transform: pg.Vector2 = pg.Vector2(0, 0)
     ):
         super().__init__()
@@ -52,9 +52,9 @@ class Button(pg.sprite.Sprite):
 
     def update(self, dt):
         if self.hover:
-            self.lerp_t = clamp(0, 1, self.lerp_t + self.on_hover_in_time * dt)
+            self.lerp_t = clamp(0, 1, self.lerp_t + dt / self.on_hover_in_time)
         else:
-            self.lerp_t = clamp(0, 1, self.lerp_t - self.on_hover_out_time * dt)
+            self.lerp_t = clamp(0, 1, self.lerp_t - dt / self.on_hover_out_time)
         color = lerp(
             self.color,
             self.hover_color,

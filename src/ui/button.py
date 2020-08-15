@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Tuple
 
 import pygame as pg
 
@@ -9,30 +9,37 @@ from src.utils.typewriter import TypewriterConfig, write
 
 
 class Button(pg.sprite.Sprite):
-    color = s.BLACK
-    hover_color = s.DARKGREEN
-    text = s.GREEN
-
     def __init__(
             self, size: pg.Vector2, pos: pg.Vector2,
-            text: str, on_click: Union[CustomEvents, int]
+            text: str, on_click: Union[CustomEvents, int],
+            parent_surface: pg.Surface,
+            text_cfg: TypewriterConfig = TypewriterConfig(),
+            color: Tuple[int, int, int] = s.BLACK,
+            hover_color: Tuple[int, int, int] = s.DARKGREEN,
+            parent_transform: pg.Vector2 = pg.Vector2(0, 0)
     ):
         super().__init__()
         self._register_listeners()
+        self.pos = pos
         self.text = text
+        self.text_cfg = text_cfg
+        self.color = color
+        self.hover_color = hover_color
+        self.parent_surface = parent_surface
+        self.parent_transform = parent_transform
         self.image = pg.Surface(size)
         self.image.fill(self.color)
-        self.rect = self.image.get_rect(topleft=pos)
+        self.rect = self.image.get_rect(topleft=self.pos)
         self.hover = False
         self.on_click = on_click
+        self.draw_text()
 
     def draw_text(self):
-        cfg = TypewriterConfig(
-            pos='center',
-            color=s.GREEN,
-            size=22
+        write(
+            surface=self.image,
+            text=self.text,
+            config=self.text_cfg,
         )
-        write(self.image, self.text, config=cfg)
 
     def _register_listeners(self):
         Overseer.add_listener(pg.MOUSEMOTION, self)
@@ -44,11 +51,12 @@ class Button(pg.sprite.Sprite):
         else:
             self.image.fill(self.color)
         self.draw_text()
+        self.parent_surface.blit(self.image, self.rect)
 
     def on_notify(self, event):
         # we can test collisions this way because we are only subscribed for
         # mouse events, otherwise "event" might have no attr "pos".
-        if self.rect.collidepoint(event.pos):
+        if self.rect.collidepoint(event.pos - self.parent_transform):
             self.hover = True
             if event.type == pg.MOUSEBUTTONUP and event.button == 1:
                 dispatch = pg.event.Event(

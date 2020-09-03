@@ -32,9 +32,9 @@ class TypewriterConfig:
 
 
 def write(
-    surface: pg.Surface, text: str, coords: Coords = None,
+    surface: pg.Surface, text: str, pos: pg.Vector2 = None,
     config: TypewriterConfig = TypewriterConfig()
-) -> None:
+) -> pg.Rect:
     font = get_font(config.size, config.bold)
 
     text_surf = font.render(
@@ -43,14 +43,15 @@ def write(
         False,  # antialias
         config.color  # color
     )
-    text_rect = position(surface, text_surf.get_rect(), config, coords)
+    text_rect = position(surface, text_surf.get_rect(), config, pos)
     surface.blit(text_surf, text_rect)
+    return text_rect
 
 
-def position(surface, text_rect, config, coords=None):
+def position(surface, text_rect, config, pos=None):
     s_rect = surface.get_rect()
-    if coords:
-        text_rect.topleft = coords
+    if pos:
+        text_rect.topleft = pos
     elif config.pos == 'center':
         text_rect.center = s_rect.center
     elif config.pos == 'topleft':

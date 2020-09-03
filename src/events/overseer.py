@@ -5,10 +5,6 @@ from collections import defaultdict
 
 import pygame as pg
 
-from src.events.events import (
-    CustomEvents, CustomEventIsNotDefined, CustomEventHasNoName
-)
-
 
 logger = logging.getLogger(Path(__file__).stem)
 
@@ -24,10 +20,7 @@ class Overseer:
 
     @classmethod
     def add_listener(cls, event_type, entity: Any):
-        if event_type in CustomEvents:
-            name = event_type.name
-        else:
-            name = pg.event.event_name(event_type)
+        name = pg.event.event_name(event_type)
         logger.debug(
             'Registering listener: %r for event %r',
             entity, name
@@ -38,22 +31,6 @@ class Overseer:
     def broadcast(cls, event):
         logger.debug('Broadcasting: %r', event)
         name = event.type
-        if event.type == pg.USEREVENT:
-            sanitize_user_event(event)
-            name = event.custom_type
 
         for listener in cls.listeners[name]:
             listener.on_notify(event)
-
-
-def sanitize_user_event(event):
-    if not hasattr(event, 'custom_type'):
-        raise CustomEventHasNoName((
-            f'User handled event "{event!r}" needs '
-            'a "custom_type" attribute'
-        ))
-    if not isinstance(event.custom_type, CustomEvents):
-        raise CustomEventIsNotDefined((
-            f'User handled event "{event!r}" is not a member of '
-            'CustomEvents(Enum)'
-        ))

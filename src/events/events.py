@@ -1,23 +1,13 @@
-from enum import Enum, EnumMeta
-
 import pygame as pg
 
 
-class CustomEventHasNoName(Exception):
-    pass
-
-
-class CustomEventIsNotDefined(Exception):
-    pass
-
-
-class CustomEnumMeta(EnumMeta):
-    def __contains__(self, item):
-        try:
-            return super().__contains__(item)
-        except TypeError:
-            return False
-
-
-class CustomEvents(Enum, metaclass=CustomEnumMeta):
+class CustomEvents:
     START_GAME = pg.event.custom_type()
+    PLAY_ANIMATION = pg.event.custom_type()
+    PAUSE_ANIMATION = pg.event.custom_type()
+    RESTART_ANIMATION = pg.event.custom_type()
+    W_ALIGN_CHANGE_ANIMATION = pg.event.custom_type()
+    W_COHESION_CHANGE_ANIMATION = pg.event.custom_type()
+    W_SEP_CHANGE_ANIMATION = pg.event.custom_type()
+    VIEW_RADIUS_CHANGE_ANIMATION = pg.event.custom_type()
+    MAX_STEER_FORCE_ANIMATION = pg.event.custom_type()

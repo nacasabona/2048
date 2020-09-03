@@ -70,14 +70,7 @@ class Button(pg.sprite.Sprite):
         if self.rect.collidepoint(event.pos - self.parent_transform):
             self.hover = True
             if event.type == pg.MOUSEBUTTONUP and event.button == 1:
-                dispatch = pg.event.Event(
-                    # FIXME: this is not very pretty, we want the button to be
-                    #        able to broadcast not only a CustomEvent but also
-                    #        a pygame native event.
-                    pg.USEREVENT if self.on_click in CustomEvents
-                    else self.on_click,
-                    {'custom_type': self.on_click}
-                )
+                dispatch = pg.event.Event(self.on_click)
                 pg.event.post(dispatch)
         else:
             self.hover = False

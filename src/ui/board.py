@@ -82,6 +82,5 @@ class Board(pg.sprite.Sprite):
     def on_notify(self, event):
         if event.type == pg.KEYDOWN:
             self.move(event.key)
-        if event.type == pg.USEREVENT:
-            if event.custom_type == CustomEvents.START_GAME:
-                self.new()
+        if event.type == CustomEvents.START_GAME:
+            self.new()
